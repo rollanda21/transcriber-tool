@@ -1,0 +1,65 @@
+:root {
+  --primary-white: #fff;
+  --primary-orange: #ff4500;
+  --primary-dark: rgb(255, 255, 255, 0);
+  --primary-red: crimson;
+}
+
+
+
+/***********************NAV BAR*****************************************************/
+.navbar {
+  
+    /*position: fixed;*/
+    /*top: O;*/
+    z-index: 2;
+  }
+  
+  
+  nav a.nav-link {
+    /*font-weight: 500;*/
+    letter-spacing: 0.01rem;
+  
+  }
+  
+  nav ul li {
+    text-transform: uppercase;
+    padding-left: 5%;
+    padding-right: 5%;
+  }
+  nav ul {
+    margin-right: 10%;
+    padding: 0 !important;
+  }
+  
+  .navbar-nav > li > a {   
+    
+    color: var(--primary-white) !important;
+    border-top: 0.188rem solid var(--primary-dark);
+    padding: 0 !important;
+    
+  }
+  
+  .navbar-brand {
+    /*max-width: 17.25rem;
+    padding: 0 !important;
+    height: 6rem !important;*/
+    padding: 0 !important;
+    color: var(--primary-white) !important;
+    text-transform: uppercase;
+  }
+  
+  .navbar-nav > li > a:hover{
+    border-top: 0.188rem solid var(--primary-red);
+
+  }
+  .navbar-nav > li > a:focus{
+    border-top: 0.188rem solid var(--primary-red);
+    background-color: var(--primary-red);
+    border-radius: 4px;
+
+  }
+
+  
+  
+  /*********************END NAVBAR LINKS**************************************************/
