@@ -1,0 +1,48 @@
+:root {
+  --primary-white: #fff;
+  --primary-orange: #ff4500;
+  --primary-dark: rgb(255, 255, 255, 0);
+  --primary-red: crimson;
+}
+
+
+
+/***********************NAV BAR*****************************************************/
+.navbar {
+  
+    /*position: fixed;*/
+    /*top: O;*/
+    z-index: 2;
+  }
+  
+  
+  nav a.nav-link {
+    /*font-weight: 500;*/
+    letter-spacing: 0.041rem;
+  
+  }
+  
+  nav ul li {
+    text-transform: uppercase;
+  }
+  
+  .navbar-nav > li > a {   
+    
+    color: var(--primary-white) !important;
+    border-top: 0.188rem solid var(--primary-dark);
+  }
+  
+  .navbar-brand {
+    /*max-width: 17.25rem;
+    padding: 0 !important;
+    height: 6rem !important;*/
+    color: var(--primary-white) !important;
+    text-transform: uppercase;
+  }
+  
+  .navbar-nav > li > a:hover, .navbar-nav > li > a:focus{
+    border-top: 0.188rem solid var(--primary-red);
+  }
+  
+  
+  /*********************END NAVBAR LINKS**************************************************/
