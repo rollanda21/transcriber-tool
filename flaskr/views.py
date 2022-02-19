@@ -53,14 +53,16 @@ def upload_audio():
             global filename
             filename = secure_filename(file.filename)
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            return redirect(url_for('views.upload_audio', name=filename))
+            return redirect(url_for('views.transcribe', name=filename))
     return render_template('upload.html')
 
 
 #Transcribe all the chunks one by one
 @views.route('/transcribe', methods = ['GET', 'POST'])
 def transcribe():
-    audio = AudioSegment.from_file(filename)
+    filepath = os.path.join(os.getcwd(), 'flaskr', 'chunks', filename)
+    
+    audio = AudioSegment.from_file(filepath)
     total_duration = math.ceil(audio.duration_seconds)
     #print(total_duration)
 
@@ -70,7 +72,7 @@ def transcribe():
     # Reading Audio file as source
     # listening the audio file and store in audio_text variable
 
-    with sr.AudioFile(filename) as source:
+    with sr.AudioFile(filepath) as source:
         audio_text = r.record(source, duration=4)
         #audio_text1 = r.record(source, duration=4)
     
@@ -86,10 +88,10 @@ def transcribe():
 
         
 
-    #os.remove(filename)
+    os.remove(filepath)
     
        
-    return render_template("transcribe.html", transcript=text)
+    return render_template("transcribe.html", transcript=text, filename=filename)
 
 
 @views.route('/subtitle')
