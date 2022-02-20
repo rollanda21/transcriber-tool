@@ -11,7 +11,8 @@ import math
 views = Blueprint('views', __name__)
 
 #******* Global variables********
-filename = ''
+filename = '2.wav'
+
 
 
 @views.route('/')
@@ -57,6 +58,48 @@ def upload_audio():
     return render_template('upload.html')
 
 
+
+# Split audios in small chunks
+print('************************starting*************************')
+print('./flaskr/chunks/' + filename)
+
+class SplitWavAudio():
+    def __init__(self):
+        #self.folder = folder
+        #self.filename = filename
+        #self.filepath = folder + '\\' + filename
+        #self.filepath = os.path.join(os.getcwd(), 'flaskr', 'chunks', filename)        
+        #self.audio = AudioSegment.from_file(os.path.join(os.getcwd(), 'flaskr', 'chunks', filename))        
+        self.audio = AudioSegment.from_file('./flaskr/chunks/' + filename)        
+
+    
+    def get_duration(self):
+        #print('********************audio duration in seconds*****************************************')
+        #print(self.audio.duration_seconds)
+        return self.audio.duration_seconds
+    
+    def single_split(self, from_sec, to_sec, split_filename):
+        t1 = from_sec * 1000
+        t2 = to_sec * 1000
+        split_audio = self.audio[t1:t2]
+        split_audio.export(os.path.join(os.getcwd(), 'flaskr', 'chunks', split_filename), format="wav")
+        
+    def multiple_split(self, sec_per_split):
+        total_sec = math.ceil(self.get_duration())
+        for i in range(0, total_sec, sec_per_split):
+            split_fn = str(i) + '_' + filename
+            self.single_split(i, i+sec_per_split, split_fn)
+            print(str(i) + ' Done')
+            if i == total_sec - sec_per_split:
+                print('All splited successfully')
+
+
+split_wav = SplitWavAudio()
+split_wav.multiple_split(sec_per_split=5)
+print('success!!')
+
+
+
 #Transcribe all the chunks one by one
 @views.route('/transcribe', methods = ['GET', 'POST'])
 def transcribe():
@@ -80,10 +123,12 @@ def transcribe():
         try:
 
             # using google speech recognition
+            
             text = r.recognize_google(audio_text, language = "fr-FR")
             #print(text1)
         
         except:
+            text = 'sorry, something went wrong ! Please check your network !'
             print('Sorry.. run again...')
 
         
