@@ -13,7 +13,8 @@ $ virtualenv project-env
 $ source project-env/bin/activate
 $ pip install -r requirements.txt
 
-
+## Features
+* automatic Transcription even for long audios
 
 $ cd projectname/
 $ python app.py
