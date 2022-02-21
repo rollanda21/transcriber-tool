@@ -11,7 +11,10 @@ import math
 views = Blueprint('views', __name__)
 
 #******* Global variables********
-filename = '2.wav'
+filename = ''
+chunks_counter = []
+text = []
+transcript = []
 
 
 
@@ -89,24 +92,39 @@ class SplitWavAudio():
         for i in range(0, total_sec, sec_per_split):
             split_fn = str(i) + '_' + filename
             self.single_split(i, i+sec_per_split, split_fn)
+            global chunks_counter
+            chunks_counter.append(i)
             print(str(i) + ' Done')
             if i == total_sec - sec_per_split:
                 print('All splited successfully')
 
 
-split_wav = SplitWavAudio()
-split_wav.multiple_split(sec_per_split=5)
-print('success!!')
 
+def split_audio():
+    split_wav = SplitWavAudio()
+    split_wav.multiple_split(sec_per_split=5)
+    print('success!!')
+    print(chunks_counter)
 
+def reinitialize_global():
+    global chunks_counter
+    chunks_counter = []
+    global text
+    text = []
 
-#Transcribe all the chunks one by one
 @views.route('/transcribe', methods = ['GET', 'POST'])
 def transcribe():
-    filepath = os.path.join(os.getcwd(), 'flaskr', 'chunks', filename)
+    #filepath = os.path.join(os.getcwd(), 'flaskr', 'chunks', filename)
+
+    #Split audio
+    split_wav = SplitWavAudio()
+    split_wav.multiple_split(sec_per_split=5)
+    print('success!!')
+    print(chunks_counter)
     
-    audio = AudioSegment.from_file(filepath)
-    total_duration = math.ceil(audio.duration_seconds)
+    
+    #audio = AudioSegment.from_file(filepath)
+    #total_duration = math.ceil(audio.duration_seconds)
     #print(total_duration)
 
     # Initialize recognizer class (for recognizing the speech)
@@ -114,29 +132,41 @@ def transcribe():
 
     # Reading Audio file as source
     # listening the audio file and store in audio_text variable
+    #Transcribe all the chunks one by one
+    i = 0
+    for i in chunks_counter:
+        chunkpath = os.path.join(os.getcwd(), 'flaskr', 'chunks', "{}_".format(i) + filename)
+        with sr.AudioFile(chunkpath) as source:
+            audio_text = r.record(source)
+            #audio_text1 = r.record(source, duration=4)
+        
+            # recoginize_() method will throw a request error if the API is unreachable, hence using exception handling
+            try:
 
-    with sr.AudioFile(filepath) as source:
-        audio_text = r.record(source, duration=4)
-        #audio_text1 = r.record(source, duration=4)
-    
-        # recoginize_() method will throw a request error if the API is unreachable, hence using exception handling
-        try:
-
-            # using google speech recognition
+                # using google speech recognition
+                global text
+                text.append(r.recognize_google(audio_text, language = "fr-FR"))                
             
-            text = r.recognize_google(audio_text, language = "fr-FR")
-            #print(text1)
-        
-        except:
-            text = 'sorry, something went wrong ! Please check your network !'
-            print('Sorry.. run again...')
+            except:
+                print('Sorry.. run again...')
+                
+
+        os.remove(chunkpath)
 
         
 
-    os.remove(filepath)
-    
+    transcript = text
+    print(transcript)
+    reinitialize_global()
+
+        
+
+    #os.remove(os.path.join(os.getcwd(), 'flaskr', 'chunks', filename))
+
+ 
        
-    return render_template("transcribe.html", transcript=text, filename=filename)
+    return render_template("transcribe.html", transcript=transcript, len=len(transcript), error='sorry, something went wrong!', filename=filename)
+
 
 
 @views.route('/subtitle')
