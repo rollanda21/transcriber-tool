@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{%block title%} Home {%endblock%} 
+
+{% block content %}
+<div class="transcribe" id="transcribe">
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12 form-wraper">
+
+                <h1 class="text-center">Transcription</h1>
+                <div class="transcribe-form">
+
+                    
+                    <form action = "" method = "POST"  enctype = "multipart/form-data" class="transcribe-form">
+                        <label class="form-label text-center" for="customFile">Upload your audio file</label>
+                        <input type = "file" name = "file" class="form-control" id="customFile" accept=".mp3, .wav" />
+                        <button type="submit" class="btn btn-primary">Transcribe</button>
+                        
+                        
+                    </form> 
+                </div>
+            </div>
+            
+        </div>
+    </div>
+   
+
+    
+</div>
+
+
+
+
+
+
+
+
+{% endblock%}
