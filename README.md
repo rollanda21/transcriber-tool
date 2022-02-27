@@ -14,7 +14,8 @@ $ source project-env/bin/activate
 $ pip install -r requirements.txt
 
 ## Features
-* automatic Transcription even for long audios
+* automatic Transcription even \for long audios
+* Authencation
 
 $ cd projectname/
 $ python app.py
