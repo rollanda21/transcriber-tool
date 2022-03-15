@@ -168,7 +168,26 @@ def transcribe():
     return render_template("transcribe.html", transcript=transcript, len=len(transcript), error='sorry, something went wrong!', filename=filename)
 
 
-
+# Generate subtitles
+@views.route('/upload_video', methods = ['GET', 'POST'])
+def upload_video():
+    if request.method == 'POST':
+        # check if the post request has the file part
+        if 'file' not in request.files:
+            flash('No file part')
+            return redirect(request.url)
+        file = request.files['file']
+        # If the user does not select a file, the browser submits an
+        # empty file without a filename.
+        if file.filename == '':
+            flash('No selected file')
+            return redirect(request.url)
+        if file and allowed_file(file.filename):
+            global filename
+            filename = secure_filename(file.filename)
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            return redirect(url_for('views.transcribe', name=filename))
+    return render_template('upload_video.html')
 @views.route('/subtitle')
 def subtitle():
     return render_template("subtitle.html")
