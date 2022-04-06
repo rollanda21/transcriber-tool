@@ -120,7 +120,7 @@ def transcribe():
     split_wav = SplitWavAudio()
     split_wav.multiple_split(sec_per_split=5)
     print('success!!')
-    print(chunks_counter)
+    #print(chunks_counter)
     
     
     #audio = AudioSegment.from_file(filepath)
@@ -145,18 +145,21 @@ def transcribe():
 
                 # using google speech recognition
                 global text
-                text.append(r.recognize_google(audio_text, language = "fr-FR"))                
+                textline = r.recognize_google(audio_text, language = "fr-FR")
+                print(textline)
+                text.append(textline)
+                        
             
             except:
                 print('Sorry.. run again...')
-                
 
+        
         os.remove(chunkpath)
 
         
 
     transcript = text
-    print(transcript)
+    #print(transcript)
     reinitialize_global()
 
         
