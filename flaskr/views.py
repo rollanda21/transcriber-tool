@@ -246,11 +246,9 @@ def subtitle():
     with open(srtout, 'w') as newfile:
         newfile.write(srtstring2)
 
-    #send_file(path, as_attachment=True)
+        return send_file(filename.split('.')[0] + '.' + 'srt', as_attachment=True)
 
     return render_template("subtitle.html", filename=filename)
-
-
 
     
 @views.route('/record')
