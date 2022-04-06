@@ -48,10 +48,11 @@
     height: 10vh;
     margin-top: 10%;
     /*background-color: darkviolet;*/
-    padding: 20px;
-    
+    padding: 20px;    
     
   }
+
+
 
   .transcript {
     width: 100%;
@@ -64,3 +65,12 @@
   }
 
     /*********************END Transcibe section**************************************************/
+    
+    /*********************Subtitles section**************************************************/
+
+  .subtitle{
+    background-color: darkviolet;
+    height: 80vh;
+    width: 100%;
+
+    }
